@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('instagram.urls')),
     path('account/', include('account.urls')),
-    path('social/', include('social.urls')),
+    path('social/', include('social.urls')), 
+    path('blocksystem/', include('blocksystem.urls')),
 
 ]

@@ -65,5 +65,39 @@ class FollowRequestViewSet(viewsets.ModelViewSet):
         following = FollowRequest.objects.filter(sender=profile, status='accept')
         serializer = self.get_serializer(following, many=True)
         return Response(serializer.data)
+    
+    # this for thee unfolloww
+
+    @action(detail=False, methods=['post'])
+    def unfollow(self,request):
+        sender_id=request.data.get('sender')
+        receiver_id=request.data.get('receiver')
+
+        try:
+            sender=Instaprofile.objects.get(id=sender_id)
+            receiver=Instaprofile.objects.get(id=receiver_id)
+        except Instaprofile.DoesNotExist:
+            return Response({'detail':'user not exists'})
+        
+
+        
+        try:
+            followrequest=FollowRequest.objects.get(sender=sender,receiver=receiver,status='accept')
+    
+        except FollowRequest.DoesNotExist:
+            return Response({'detail': 'the follow request is not found'})
+        
+        followrequest.delete()
+        return Response({'detail':'u unfollow or delete this request'})
+        
+    
+    
+    
+    
+
+    
+
+
+
 
 # Create your views here.

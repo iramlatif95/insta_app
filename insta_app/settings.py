@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'account',
     'django_extensions',
     'rest_framework_simplejwt.token_blacklist',
+    'blocksystem',
 
     'social',
 ]

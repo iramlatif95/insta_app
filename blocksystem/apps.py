@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class InstafollowConfig(AppConfig):
+class BlocksystemConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'instafollow'
+    name = 'blocksystem'
