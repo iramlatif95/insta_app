@@ -5,6 +5,7 @@ from .views import InstaprofileViewSet, InstafollwerViewSet
 
 router = DefaultRouter()
 router.register('profiles', InstaprofileViewSet, basename='profiles')
+#router.register('profiles/<int:user_id>/',InstaprofileViewSet,basename='profiles')
 router.register('followers', InstafollwerViewSet, basename='followers')
 
 urlpatterns = [
