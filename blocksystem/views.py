@@ -8,10 +8,12 @@ from social.models import FollowRequest
 from .models import Block
 from .serializers import BlockSerializer
 from instagram.models import Instaprofile
+from rest_framework.permissions import IsAuthenticated
 
 class BlockViewSet(viewsets.ModelViewSet):
     queryset = Block.objects.all()
     serializer_class = BlockSerializer 
+    #permission_classes = [IsAuthenticated]  
 
     @action(detail=False, methods=['post'])
     def userblock(self, request):

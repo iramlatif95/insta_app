@@ -4,7 +4,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import FollowRequest
 from .serializers import FollowRequestSerializer
-from instagram.models import Instaprofile
+from instagram.models import Instaprofile,Instafollowers
+#from .models import Followe
 
 class FollowRequestViewSet(viewsets.ModelViewSet):
     queryset = FollowRequest.objects.all()
@@ -43,6 +44,9 @@ class FollowRequestViewSet(viewsets.ModelViewSet):
         follow_request = self.get_object()
         follow_request.status = 'accept'
         follow_request.save()
+
+        # it save it in a follower
+        Instafollowers.objects.get_or_create(follinguser=follow_request.receiver,followeruser=follow_request.sender)
         return Response({'status': 'accepted'})
 
     @action(detail=True, methods=['post'])
@@ -55,14 +59,14 @@ class FollowRequestViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def followers(self, request):
         profile = Instaprofile.objects.get(user=request.user)
-        followers = FollowRequest.objects.filter(receiver=profile, status='accept')
+        followers = Instafollowers.objects.filter(receiver=profile, status='accept')
         serializer = self.get_serializer(followers, many=True)
         return Response(serializer.data)
 
     @action(detail=False, methods=['get'])
     def following(self, request):
         profile = Instaprofile.objects.get(user=request.user)
-        following = FollowRequest.objects.filter(sender=profile, status='accept')
+        following = Instafollowers.objects.filter(sender=profile, status='accept')
         serializer = self.get_serializer(following, many=True)
         return Response(serializer.data)
     
@@ -76,20 +80,20 @@ class FollowRequestViewSet(viewsets.ModelViewSet):
         try:
             sender=Instaprofile.objects.get(id=sender_id)
             receiver=Instaprofile.objects.get(id=receiver_id)
+            
+
         except Instaprofile.DoesNotExist:
             return Response({'detail':'user not exists'})
-        
-
-        
         try:
-            followrequest=FollowRequest.objects.get(sender=sender,receiver=receiver,status='accept')
-    
+            instafollowers=Instafollowers.objects.get(sender=sender,receiver=receiver,status='accept').exists()
+            Instafollowers.delete()
+            Instafollowers.objects.filter(followinguser=receiver,followeruser=sender).delete  # delete this unfollow 
         except FollowRequest.DoesNotExist:
             return Response({'detail': 'the follow request is not found'})
+        return Response({'detail':'You have unfollowed the user successfully.'}, status=status.HTTP_200_OK)
         
-        followrequest.delete()
-        return Response({'detail':'u unfollow or delete this request'})
-        
+
+           
     
     
     
