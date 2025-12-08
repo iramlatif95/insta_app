@@ -28,9 +28,6 @@ class BlockViewSet(viewsets.ModelViewSet):
         except Instaprofile.DoesNotExist:
             return Response({'detail': 'User does not exist.'}, status=404)
 
-        if blocker == block_user:
-            return Response({'detail': 'You cannot block yourself.'}, status=400)
-
         if Block.objects.filter(block=block_user, blocker=blocker).exists():
             return Response({'detail': 'User is already blocked.'}, status=400)
 
