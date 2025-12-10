@@ -15,6 +15,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 
+        
+
 # for the pagination
 class CommentPagination(PageNumberPagination):
     page_size=10 
@@ -36,6 +38,25 @@ class CommentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         post_id = self.kwargs.get('post_id')
         return Comment.objects.filter(post_id=post_id,parent=None).order_by('-created_at')
+    
+
+    def perform_create(self, serializer):
+        serializer.save(
+        user=self.request.user,
+        post_id=self.kwargs.get('post_pk'),  # use post_pk, not post_id
+        parent=Comment.objects.filter(id=self.request.data.get('parent')).first()
+    )
+
+    def perform_create(self, serializer):
+        parent_id = self.request.data.get('parent')
+        serializer.save(
+        user=self.request.user,
+        post=self.kwargs.get('post_id'),
+        parent=Comment.objects.filter(id=parent_id).first() if parent_id else None
+    )
+
+
+
     
     # def perform_create(self, serializer):
     #     post=self.kwargs.get('post_id')

@@ -25,13 +25,15 @@ class CommentSerializer(serializers.ModelSerializer):
             return obj.likepost.filter(user=request.user).exists()
         return False
     
-    class PostSerializer(serializers.ModelSerializer):
-    comments = CommentSerializer(many=True, read_only=True)  # include all comments with likes and replies
+class PostSerializer(serializers.ModelSerializer):
+        
+        comments = CommentSerializer(many=True, read_only=True)
+        
 
-    class Meta:
-        model = Post
-        fields = ['id', 'user', 'caption', 'created_at', 'comments']
-        read_only_fields = ['user', 'created_at']
+        class Meta:
+            model = Post
+            fields = ['id', 'user', 'caption', 'created_at', 'comments']
+            read_only_fields = ['user', 'created_at']
 
 
 

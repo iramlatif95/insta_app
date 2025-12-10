@@ -23,7 +23,8 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path('social/', include('social.urls')), 
     path('blocksystem/', include('blocksystem.urls')),
-    path('media/', include('media.urls')),
+    path('media/', include('media.urls')), 
+    path('notification/', include('notification.urls')),
 
 
 ]
