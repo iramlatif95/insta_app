@@ -25,6 +25,8 @@ urlpatterns = [
     path('blocksystem/', include('blocksystem.urls')),
     path('media/', include('media.urls')), 
     path('notification/', include('notification.urls')),
+    path('search/', include('search.urls')),
+
 
 
 ]

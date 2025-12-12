@@ -48,7 +48,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
     def mention(self,request,pk=None):
         try:
         
-            post=self.get_object
+            post=self.get_object()
             mention_user_id=request.data.get('mention_id')
             mention_user=User.objects.get(id=mention_user_id)
             Notifications.objects.create(
@@ -56,7 +56,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
             receiver=mention_user,
             notification_type='mention',
             post=post,
-            text=f"{request.user.username} mentioned you."
+            text=f"Someone mentioned you (@{request.user.username})."
             )
             return Response({'mention': True})
 

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'blocksystem',
     'media',
     'notification',
+    'search',
 
     'social',
 ]
